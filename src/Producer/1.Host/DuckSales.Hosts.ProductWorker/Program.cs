@@ -1,17 +1,21 @@
 using DuckSales.Hosts.ProductWorker;
 using Serilog;
 
+
 Log.Logger = new LoggerConfiguration()
     .ReadFrom
-    .Configuration(GetConfiguration(args))
+    .Configuration(GetAppConfiguration(args))
     .CreateLogger();
 
 try
 {
     Log.Information("Starting host...");
     IHost host = Host.CreateDefaultBuilder(args)
-        .ConfigureServices(services => { services.AddHostedService<Worker>(); })
-        .UseSerilog((context, services, loggerConfig) => loggerConfig.ReadFrom.Configuration(context.Configuration))
+        .ConfigureServices(services =>
+        {
+            services.AddHostedService<Worker>();
+        })
+        .UseSerilog((context, loggerConfig) => loggerConfig.ReadFrom.Configuration(context.Configuration))
         .Build();
 
     Log.Information("Host created, running app...");
@@ -26,7 +30,7 @@ finally
     Log.CloseAndFlush();
 }
 
-static IConfiguration GetConfiguration(string[] args)
+static IConfiguration GetAppConfiguration(string[] args)
 {
     string enviroment = Environment.GetEnvironmentVariable("DOTNET_ENVIRONMENT") ?? "Production";
 
@@ -44,4 +48,3 @@ static IConfiguration GetConfiguration(string[] args)
 
     return configurationBuilder.Build();
 }
-
