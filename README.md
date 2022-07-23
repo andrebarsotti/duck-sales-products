@@ -8,7 +8,7 @@ Para minificar os acessos ao seu bando de dados transacional o time de TI decidi
 
 ## 2. Solução
 
-![C4 dos containers da solução](_assets/_assets/SistemaProdutos.png)
+![C4 dos containers da solução](_assets/SistemaProdutos.png)
 
 A solução desse repositório consiste Producer e um Consumer de mensagens Kafka.
 
