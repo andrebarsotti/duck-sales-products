@@ -1,35 +1,34 @@
-# Occaecat elit irure ea eu amet et pariatur pariatur velit qui labore aliqua quis et.
+# Cadastro simplificado de produtos.
 
-## 1. Sobre
+## 1. Cenário
 
-Do dolor excepteur esse mollit ad culpa laboris veniam veniam ullamco exercitation veniam quis. Consequat nulla sit occaecat elit minim nisi qui minim. Amet amet cillum occaecat consequat Lorem ea non incididunt sunt laborum. In cupidatat culpa reprehenderit occaecat qui sit sunt.
+A DuckSales Ltda. tem um sistema de controle de produtos que fornece essas informações para a sua loja virtual. As informação de preço e estoque mudam com grande frequencia dado seu volume de vendas e as promoções, chegando à milhares de mudanças em um segundo.
 
-## 2. Requisitos
+Para minificar os acessos ao seu bando de dados transacional o time de TI decidiu criar um banco NOSQL onde os dados do produto seram salvos em um formato simplificado e a API de consulta de produtos, que esta em gestão de outro time da empresa.
 
-Do ea ex voluptate occaecat. Reprehenderit officia deserunt commodo do reprehenderit pariatur commodo ipsum excepteur. Magna velit in adipisicing eu labore dolor mollit eiusmod amet culpa amet ex fugiat tempor.
+## 2. Solução
 
-## 3. Configuração
+[C4 dos containers da solução](./_assets/_assets/SistemaProdutos.png)
 
-Anim dolor occaecat aliqua velit ut id excepteur exercitation do incididunt anim id. Consequat cupidatat ad occaecat aute laborum commodo irure officia Lorem dolor. Officia aliquip eu dolor nisi. Pariatur tempor anim laborum ipsum incididunt elit.
+A solução desse repositório consiste Producer e um Consumer de mensagens Kafka.
 
-## 4. Execução
+O Producer é um Worker desenvolvido em .NET que gera dados de produtos fictícios, os salva em um banco de dados SQL e envia para um tópico Kafka. O volume de transações por segundo e o número de registro no banco de dados são configurados em seu appsettings ou em variáveis de ambiente utilizadas pelo serviço.
 
-Sit labore mollit Lorem amet fugiat ad veniam. Cupidatat exercitation consectetur sit deserunt sit dolore Lorem ea esse. Id elit sunt aute velit incididunt nisi nisi est do. Dolore aliqua Lorem occaecat dolor enim velit adipisicing labore pariatur ut aute Lorem. Minim voluptate dolor veniam commodo commodo sint dolore officia sit aliquip. Aliquip proident cupidatat eu excepteur id.
+As mensagens do tópico Kafka são consumidas por uma Azure Function que utiliza Kafka Trigger. Nessa Function os dados da mensagem são simplificados e salvos em um banco de dados MongoDB.
+
+Tanto o Producer quanto o Consumer são _containerizados_ para sua publicação na nuvem.
+
+## 3. Execução Local
+
+TDB
+
+## 4. Arquitetura de Solução do Azure
+
+TDB
+
+## 5. Execução no Azure
+
+TDB
 
 ## Referências
 
-**Referência Bibliográfica de Livro na ABNT:**
-
-Autor. Título: Subtítulo. Edição. Local: Editora, Ano. Páginas. Volume.
-
-**Exemplo de Referência:**
-
-TANENBAUM, Andrew. Redes de computadores. 5. ed. São Paulo: Elsevier, 2016. 900 p.
-
-**Referência Bibliográfica de site na ABNT:**
-
-Autor. Título: subtítulo. edição. ano. Disponível em: Link do site. Acesso em: data de acesso.
-
-**Exemplo de Referência:**
-
-PEREIRA, Alberto Ramos. Segurança em Software: Uma análise de técnicas. 2016. Disponível em: <<http://www.abc.com.br>>. Acesso em: 3 ago. 2018.
