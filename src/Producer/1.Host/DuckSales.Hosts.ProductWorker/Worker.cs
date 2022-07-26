@@ -11,7 +11,7 @@ public class Worker : BackgroundService
 
     public override Task StartAsync(CancellationToken cancellationToken)
     {
-        _logger.LogInformation("Iniciando a aplicação...");
+        _logger.LogInformation("Iniciando a aplicaÃ§Äƒo...");
         return base.StartAsync(cancellationToken);
     }
 
@@ -26,7 +26,7 @@ public class Worker : BackgroundService
 
     public override Task StopAsync(CancellationToken cancellationToken)
     {
-        _logger.LogInformation("Parando a aplicação...");
+        _logger.LogInformation("Parando a aplicaÃ§Äƒo...");
         return base.StopAsync(cancellationToken);
     }
 }

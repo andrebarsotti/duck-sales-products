@@ -1,7 +1,6 @@
 using DuckSales.Hosts.ProductWorker;
 using Serilog;
 
-
 Log.Logger = new LoggerConfiguration()
     .ReadFrom
     .Configuration(GetAppConfiguration(args))

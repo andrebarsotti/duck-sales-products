@@ -6,7 +6,7 @@ public class Produto
 
     public string Nome { get; set; }
 
-    public string Departamento { get; set; }
+    public Departamento Departamento { get; set; }
 
     public int QuantidadeEmEstoque { get; set; }
 
