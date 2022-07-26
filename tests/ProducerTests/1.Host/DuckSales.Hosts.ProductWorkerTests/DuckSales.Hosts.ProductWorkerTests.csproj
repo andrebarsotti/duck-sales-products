@@ -21,4 +21,9 @@
     </PackageReference>
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\..\src\Producer\1.Host\DuckSales.Hosts.ProductWorker\DuckSales.Hosts.ProductWorker.csproj" />
+    <ProjectReference Include="..\..\0.SeedWork\DuckSales.Tests.SeedWork\DuckSales.Tests.SeedWork.csproj" />
+  </ItemGroup>
+
 </Project>
