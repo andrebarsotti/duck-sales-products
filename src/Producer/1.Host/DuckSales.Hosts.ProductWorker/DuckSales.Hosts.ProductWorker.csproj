@@ -24,6 +24,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\2.Application\DuckSales.Application.CommandHandlers\DuckSales.Application.CommandHandlers.csproj" />
+    <ProjectReference Include="..\..\2.Application\DuckSales.Application.Commands\DuckSales.Application.Commands.csproj" />
+    <ProjectReference Include="..\..\2.Application\DuckSales.Application.Queries\DuckSales.Application.Queries.csproj" />
     <ProjectReference Include="..\..\2.Domain\DuckSales.Domains.Products\DuckSales.Domains.Products.csproj" />
   </ItemGroup>
 </Project>
