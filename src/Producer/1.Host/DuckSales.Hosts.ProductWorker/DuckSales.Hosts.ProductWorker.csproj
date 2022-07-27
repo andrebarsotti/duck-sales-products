@@ -5,6 +5,8 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <UserSecretsId>dotnet-DuckSales.Hosts.ProductWorker-34084336-f199-4f34-95da-39710905b970</UserSecretsId>
+    <!-- Habilita o Server GC para o WorkerService -->
+    <ServerGarbageCollection>true</ServerGarbageCollection>
   </PropertyGroup>
 
   <ItemGroup>
@@ -28,5 +30,9 @@
     <ProjectReference Include="..\..\2.Application\DuckSales.Application.Commands\DuckSales.Application.Commands.csproj" />
     <ProjectReference Include="..\..\2.Application\DuckSales.Application.Queries\DuckSales.Application.Queries.csproj" />
     <ProjectReference Include="..\..\2.Domain\DuckSales.Domains.Products\DuckSales.Domains.Products.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Services" />
   </ItemGroup>
 </Project>
