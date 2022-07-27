@@ -1,3 +1,2 @@
 global using Bogus;
-global using AutoMoq;
-global using Moq;
+global using Moq.AutoMock;

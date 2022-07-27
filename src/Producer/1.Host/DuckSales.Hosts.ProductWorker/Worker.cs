@@ -1,32 +1,37 @@
+using DuckSales.Hosts.ProductWorker.Services;
+
 namespace DuckSales.Hosts.ProductWorker;
 
 public class Worker : BackgroundService
 {
     private readonly ILogger<Worker> _logger;
+    private readonly IServiceProvider _serviceProvider;
 
-    public Worker(ILogger<Worker> logger)
+    public Worker(IServiceProvider serviceProvider,
+                  ILogger<Worker> logger)
     {
         _logger = logger;
-    }
-
-    public override Task StartAsync(CancellationToken cancellationToken)
-    {
-        _logger.LogInformation("Iniciando a aplicaçăo...");
-        return base.StartAsync(cancellationToken);
+        _serviceProvider = serviceProvider;
     }
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
-        while (!stoppingToken.IsCancellationRequested)
+        try
         {
-            _logger.LogDebug("Worker running at: {time}", DateTimeOffset.Now);
-            await Task.Delay(1000, stoppingToken);
+            while (!stoppingToken.IsCancellationRequested)
+                await ExecuteScopedService();
+        }
+        catch (Exception exception)
+        {
+            _logger.LogCritical(exception, "Critical Exceptions running Product Simulation");
+            Environment.Exit(1);
         }
     }
 
-    public override Task StopAsync(CancellationToken cancellationToken)
+    private async Task ExecuteScopedService()
     {
-        _logger.LogInformation("Parando a aplicaçăo...");
-        return base.StopAsync(cancellationToken);
+        using IServiceScope scope = _serviceProvider.CreateScope();
+        var service = scope.ServiceProvider.GetRequiredService<IProductChangesSimulationService>();
+        await service.Execute();
     }
 }

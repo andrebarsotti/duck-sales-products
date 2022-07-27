@@ -31,8 +31,4 @@
     <ProjectReference Include="..\..\2.Application\DuckSales.Application.Queries\DuckSales.Application.Queries.csproj" />
     <ProjectReference Include="..\..\2.Domain\DuckSales.Domains.Products\DuckSales.Domains.Products.csproj" />
   </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Services" />
-  </ItemGroup>
 </Project>
