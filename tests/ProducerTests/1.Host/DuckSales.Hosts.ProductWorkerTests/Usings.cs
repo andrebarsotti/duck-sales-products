@@ -1,7 +1,11 @@
-global using Xunit;
+global using Bogus;
 global using DuckSales.Application.Commands;
+global using DuckSales.Application.Queries;
 global using DuckSales.Tests.SeedWork;
 global using DuckSales.Hosts.ProductWorker;
 global using DuckSales.Hosts.ProductWorker.Services;
-global using Moq;
 global using FluentAssertions;
+global using Moq;
+global using MediatR;
+global using Microsoft.Extensions.Options;
+global using Xunit;
