@@ -122,7 +122,7 @@ public class ProductsServiceTests : BaseTest
 
         // Execute
         var service = AutoMoqer.CreateInstance<ProductService>();
-        Func<Task> act = async () => { await service.UpdateProduct(dto); };
+        Func<Task> act = async () => await service.UpdateProduct(dto);
 
         // Validate
         await act.Should().ThrowAsync<ProductsDomainException>().WithMessage(ErrorMessages.ProductNotFound);
