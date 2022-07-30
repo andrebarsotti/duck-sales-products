@@ -10,9 +10,9 @@ public class UpdateProductCommandHandlerTests: BaseTest
 
         Mock<IProductsService> mockService = AutoMoqer.GetMock<IProductsService>();
 
-        ProductUpdateDTO? productDto = null;
-        mockService.Setup(service => service.UpdateProduct(It.IsAny<ProductUpdateDTO>()))
-            .Callback<ProductUpdateDTO>((dto) => productDto = dto)
+        ProductUpdateDto? productDto = null;
+        mockService.Setup(service => service.UpdateProduct(It.IsAny<ProductUpdateDto>()))
+            .Callback<ProductUpdateDto>((dto) => productDto = dto)
             .Returns(Task.CompletedTask)
             .Verifiable();
 

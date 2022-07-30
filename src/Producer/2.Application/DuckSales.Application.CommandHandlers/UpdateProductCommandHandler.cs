@@ -9,7 +9,7 @@ public class UpdateProductCommandHandler : IRequestHandler<UpdateProductCommand>
 
     public async Task<Unit> Handle(UpdateProductCommand request, CancellationToken cancellationToken)
     {
-        await _productsService.UpdateProduct(new ProductUpdateDTO(request.ProductId,
+        await _productsService.UpdateProduct(new ProductUpdateDto(request.ProductId,
             request.QuantityAvaiableInStock,
             request.UnitPrice));
 

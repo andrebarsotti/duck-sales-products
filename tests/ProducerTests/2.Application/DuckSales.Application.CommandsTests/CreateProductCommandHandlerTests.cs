@@ -13,9 +13,9 @@ public class CreateProductCommandHandlerTests : BaseTest
 
         Mock<IProductsService> mockService = AutoMoqer.GetMock<IProductsService>();
 
-        NewProductDTO? productDto = null;
-        mockService.Setup(service => service.CreateProduct(It.IsAny<NewProductDTO>()))
-            .Callback<NewProductDTO>((dto) => productDto = dto)
+        NewProductDto? productDto = null;
+        mockService.Setup(service => service.CreateProduct(It.IsAny<NewProductDto>()))
+            .Callback<NewProductDto>((dto) => productDto = dto)
             .Returns(Task.CompletedTask)
             .Verifiable();
 
