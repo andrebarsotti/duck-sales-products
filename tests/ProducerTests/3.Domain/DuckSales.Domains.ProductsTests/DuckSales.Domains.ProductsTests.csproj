@@ -26,8 +26,4 @@
     <ProjectReference Include="..\..\0.SeedWork\DuckSales.Tests.SeedWork\DuckSales.Tests.SeedWork.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Fakers" />
-  </ItemGroup>
-
 </Project>

@@ -64,9 +64,7 @@ public class ProductTests : BaseTest
     {
         // Setup
         Product product = new();
-        Departament departament = new Faker<Departament>()
-            .CustomInstantiator(fk => new Departament(fk.Commerce.Department(1)))
-            .RuleFor(e => e.Id, fk => fk.Random.Guid());
+        Departament departament = new DepartmentFaker();
 
         // Execute
         product.SetDepartment(departament);

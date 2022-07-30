@@ -2,16 +2,52 @@ namespace DuckSales.Domains.Products.Services;
 
 public interface IProductsService
 {
-    Task CreateProduct(NewProductDTO product);
+    Task CreateProduct(NewProductDto productDto);
 
-    Task UpdateProduct(ProductUpdateDTO product);
+    Task UpdateProduct(ProductUpdateDto productDto);
 }
 
-public record NewProductDTO(string ProductName,
+public class ProductService : IProductsService
+{
+    private readonly IProductRepository _repository;
+
+    public ProductService(IProductRepository repository)
+        => _repository = repository;
+
+    public async Task CreateProduct(NewProductDto productDto)
+    {
+        Departament? departament = await _repository.GetDepartmentByName(productDto.DepartamentName);
+
+        Product product = new();
+        product.SetName(productDto.ProductName);
+
+        if (departament is null)
+            product.SetDepartment(productDto.DepartamentName);
+        else
+            product.SetDepartment(departament);
+        product.SetQuantityAvaiableInStock(productDto.QuantityAvaiableInStock);
+        product.SetUnitPrice(productDto.UnitPrice);
+
+        await _repository.Add(product);
+    }
+
+    public async Task UpdateProduct(ProductUpdateDto productDto)
+    {
+        Product product = await _repository.GetById(productDto.ProductId) ??
+                          throw new ProductsDomainException(ErrorMessages.ProductNotFound);
+
+        product.SetQuantityAvaiableInStock(productDto.QuantityAvaiableInStock);
+        product.SetUnitPrice(productDto.UnitPrice);
+
+        await _repository.Update(product);
+    }
+}
+
+public record NewProductDto(string ProductName,
     string DepartamentName,
     int QuantityAvaiableInStock,
     decimal UnitPrice);
 
-public record ProductUpdateDTO(Guid ProductId,
+public record ProductUpdateDto(Guid ProductId,
     int QuantityAvaiableInStock,
     decimal UnitPrice);

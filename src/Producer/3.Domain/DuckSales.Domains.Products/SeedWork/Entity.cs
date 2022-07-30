@@ -1,5 +1,3 @@
-using MediatR;
-
 namespace DuckSales.Domains.Products.SeedWork;
 
 public abstract class Entity
