@@ -6,8 +6,8 @@ public class Departament : Entity
 {
     private string? _name;
 
-    internal const int MinNameSize = 3;
-    internal const int MaxNameSize = 20;
+    public const int MinNameSize = 3;
+    public const int MaxNameSize = 20;
 
     public Departament(string name)
     {
