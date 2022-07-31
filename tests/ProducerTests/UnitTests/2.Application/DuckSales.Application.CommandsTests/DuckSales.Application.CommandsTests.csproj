@@ -8,6 +8,7 @@
     <IsPackable>false</IsPackable>
   </PropertyGroup>
 
+
   <ItemGroup>
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.1.0" />
     <PackageReference Include="xunit" Version="2.4.1" />
@@ -21,9 +22,10 @@
     </PackageReference>
   </ItemGroup>
 
+
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\src\Producer\3.Domain\DuckSales.Domains.Products\DuckSales.Domains.Products.csproj" />
-    <ProjectReference Include="..\..\0.SeedWork\DuckSales.Tests.SeedWork\DuckSales.Tests.SeedWork.csproj" />
+    <ProjectReference Include="..\..\..\..\..\src\Producer\2.Application\DuckSales.Application.CommandHandlers\DuckSales.Application.CommandHandlers.csproj" />
+    <ProjectReference Include="..\..\..\0.SeedWork\DuckSales.Tests.SeedWork\DuckSales.Tests.SeedWork.csproj" />
   </ItemGroup>
 
 </Project>
