@@ -4,7 +4,7 @@ public abstract class Entity
 {
     private Guid _id;
     private DateTime _createdIn;
-    private DateTime _updatedIn;
+    private DateTime? _updatedIn;
 
     public virtual Guid Id
     {
@@ -30,13 +30,13 @@ public abstract class Entity
         }
     }
 
-    public virtual DateTime UpdatedIn
+    public virtual DateTime? UpdatedIn
     {
         get
         {
             return _updatedIn;
         }
-        set
+        protected set
         {
             _updatedIn = value;
         }

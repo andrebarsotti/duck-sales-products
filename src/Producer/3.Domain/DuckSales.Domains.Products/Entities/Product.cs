@@ -7,8 +7,8 @@ public class Product : Entity
     private int _quantityAvaiableInStock;
     private decimal _unitprice;
 
-    internal const int MinNameSize = 3;
-    internal const int MaxNameSize = 50;
+    public const int MinNameSize = 3;
+    public const int MaxNameSize = 50;
 
     public Product()
     {

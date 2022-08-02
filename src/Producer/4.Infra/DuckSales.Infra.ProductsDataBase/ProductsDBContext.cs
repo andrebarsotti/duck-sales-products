@@ -2,7 +2,7 @@ namespace DuckSales.Infra.ProductsDataBase;
 
 public class ProductsDBContext : DbContext
 {
-    public ProductsDBContext(DbContextOptions options) : base(options)
+    public ProductsDBContext(DbContextOptions<ProductsDBContext> options) : base(options)
     {
     }
 
