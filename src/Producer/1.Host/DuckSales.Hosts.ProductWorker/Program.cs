@@ -2,7 +2,9 @@ using DuckSales.Application.CommandHandlers.Extensions;
 using DuckSales.Application.QueryHandlers.Extensions;
 using DuckSales.Domains.Products.Extensions;
 using DuckSales.Hosts.ProductWorker;
+using DuckSales.Hosts.ProductWorker.Behaviors;
 using DuckSales.Hosts.ProductWorker.Services;
+using DuckSales.Infra.ProductsDataBase;
 using DuckSales.Infra.ProductsDataBase.Extensions;
 using MediatR;
 using Serilog;
@@ -16,11 +18,19 @@ try
 {
     Log.Information("Starting host...");
     IHost host = Host.CreateDefaultBuilder(args)
+        .ConfigureAppConfiguration((context, config) =>
+        {
+            config.Sources.Clear();
+            PreparerConfigBuilder(config, context.HostingEnvironment.EnvironmentName, args);
+        })
         .ConfigureServices((host, services) =>
         {
             services.AddHostedService<Worker>();
             services.AddScoped<IProductChangesSimulationService, ProductChangesSimulationService>();
-            services.AddMediatR(typeof(Worker).Assembly);
+            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(LoggingBehavior<,>));
+            services.Configure<ProductWorkerSettings>(host.Configuration.GetSection(nameof(ProductWorkerSettings)));
+
+            services.Configure<ProductWorkerSettings>(host.Configuration);
 
             services.AddCommannds();
             services.AddQueries();
@@ -29,6 +39,11 @@ try
         })
         .UseSerilog((context, loggerConfig) => loggerConfig.ReadFrom.Configuration(context.Configuration))
         .Build();
+
+    host.Services
+        .CreateScope()
+        .ServiceProvider
+        .GetService<ProductsDBContext>()?.Database?.EnsureCreated();
 
     await host.RunAsync();
 }

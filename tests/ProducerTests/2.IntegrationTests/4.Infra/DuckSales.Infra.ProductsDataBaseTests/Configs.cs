@@ -21,7 +21,7 @@ public static class Configs
     {
         _config = new ConfigurationBuilder()
             .SetBasePath(Directory.GetCurrentDirectory())
-            .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
+            .AddJsonFile("appsettings.json", optional: true, reloadOnChange: false)
             .AddUserSecrets<ProductDbTestFixtures>()
             .AddEnvironmentVariables()
             .Build();

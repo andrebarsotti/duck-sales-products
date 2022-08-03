@@ -30,10 +30,18 @@ public class Worker : BackgroundService
 
     private async Task ExecuteScopedService(CancellationToken cancellationToken)
     {
-        _logger.LogInformation("Running the Product Simulation Service...");
         using IServiceScope scope = _serviceProvider.CreateScope();
-        var service = scope.ServiceProvider.GetRequiredService<IProductChangesSimulationService>();
-        await service.Execute(cancellationToken);
-        _logger.LogInformation("Product Simulation Service executed.");
+        try
+        {
+            _logger.LogInformation("Running the Product Simulation Service...");
+            var service = scope.ServiceProvider.GetRequiredService<IProductChangesSimulationService>();
+            await service.Execute(cancellationToken);
+            _logger.LogInformation("Product Simulation Service executed.");
+        }
+        catch (Exception exception)
+        {
+            _logger.LogCritical(exception, "Critical Exceptions running Product Simulation");
+            throw;
+        }
     }
 }

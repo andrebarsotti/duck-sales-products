@@ -1,4 +1,5 @@
 using DuckSales.Domains.Products.Repositories;
+using DuckSales.Domains.Products.SeedWork;
 using DuckSales.Domains.ProductsTests.Entities;
 using DuckSales.Domains.ProductsTests.Entities.Fakers;
 using Moq;
@@ -16,7 +17,11 @@ public class ProductsServiceTests : BaseTest
                                 Faker.Random.Int(min: 0),
                                 Faker.Finance.Amount());
 
+        Mock<IUnitOfWork> mockUnitOfWork = AutoMoqer.GetMock<IUnitOfWork>();
         Mock<IProductRepository> mockRepository = AutoMoqer.GetMock<IProductRepository>();
+
+        mockRepository.SetupGet(repo => repo.UnitOfWork)
+            .Returns(mockUnitOfWork.Object);
 
         Product? product = null;
         mockRepository.Setup(repo => repo.Add(It.IsAny<Product>()))
@@ -28,6 +33,9 @@ public class ProductsServiceTests : BaseTest
 
         // Validate
         mockRepository.Verify(repo => repo.Add(It.IsAny<Product>()), Times.Once);
+        mockRepository.Verify(repo => repo.UnitOfWork, Times.Once);
+        mockUnitOfWork.Verify(unitOfWork => unitOfWork.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Once);
+
         product.Should().NotBeNull();
         product!.Name.Should().Be(dto.ProductName);
         product!.Departament?.Name.Should().Be(dto.DepartamentName);
@@ -46,7 +54,11 @@ public class ProductsServiceTests : BaseTest
             Faker.Random.Int(min: 0),
             Faker.Finance.Amount());
 
+        Mock<IUnitOfWork> mockUnitOfWork = AutoMoqer.GetMock<IUnitOfWork>();
         Mock<IProductRepository> mockRepository = AutoMoqer.GetMock<IProductRepository>();
+
+        mockRepository.SetupGet(repo => repo.UnitOfWork)
+            .Returns(mockUnitOfWork.Object);
 
         Product? product = null;
         mockRepository.Setup(repo => repo.Add(It.IsAny<Product>()))
@@ -62,6 +74,8 @@ public class ProductsServiceTests : BaseTest
         // Validate
         mockRepository.Verify(repo => repo.Add(It.IsAny<Product>()), Times.Once);
         mockRepository.Verify(repo => repo.GetDepartmentByName(dto.DepartamentName), Times.Once);
+        mockRepository.Verify(repo => repo.UnitOfWork, Times.Once);
+        mockUnitOfWork.Verify(unitOfWork => unitOfWork.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Once);
 
         product.Should().NotBeNull();
         product!.Name.Should().Be(dto.ProductName);
@@ -80,9 +94,12 @@ public class ProductsServiceTests : BaseTest
 
         Product product = ProductFaker.Generate();
 
+        Mock<IUnitOfWork> mockUnitOfWork = AutoMoqer.GetMock<IUnitOfWork>();
         Mock<IProductRepository> mockRepository = AutoMoqer.GetMock<IProductRepository>();
         mockRepository.Setup(repo => repo.GetById(It.IsAny<Guid>()))
                       .ReturnsAsync(product);
+        mockRepository.SetupGet(repo => repo.UnitOfWork)
+            .Returns(mockUnitOfWork.Object);
 
         Guid productId = product.Id;
         string productName = product.Name;
@@ -97,6 +114,8 @@ public class ProductsServiceTests : BaseTest
         // Validate
         mockRepository.Verify(repo => repo.Update(product), Times.Once());
         mockRepository.Verify(repo => repo.GetById(dto.ProductId), Times.Once);
+        mockRepository.Verify(repo => repo.UnitOfWork, Times.Once);
+        mockUnitOfWork.Verify(unitOfWork => unitOfWork.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Once);
 
         product.Id.Should().Be(productId);
         product.Name.Should().Be(productName);

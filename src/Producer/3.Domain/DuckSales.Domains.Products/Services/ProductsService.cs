@@ -1,3 +1,5 @@
+using Microsoft.Extensions.Logging;
+
 namespace DuckSales.Domains.Products.Services;
 
 public interface IProductsService
@@ -12,7 +14,9 @@ public class ProductService : IProductsService
     private readonly IProductRepository _repository;
 
     public ProductService(IProductRepository repository)
-        => _repository = repository;
+    {
+        _repository = repository;
+    }
 
     public async Task CreateProduct(NewProductDto productDto)
     {
@@ -29,6 +33,7 @@ public class ProductService : IProductsService
         product.SetUnitPrice(productDto.UnitPrice);
 
         await _repository.Add(product);
+        await _repository.UnitOfWork.SaveChangesAsync();
     }
 
     public async Task UpdateProduct(ProductUpdateDto productDto)
@@ -40,6 +45,7 @@ public class ProductService : IProductsService
         product.SetUnitPrice(productDto.UnitPrice);
 
         await _repository.Update(product);
+        await _repository.UnitOfWork.SaveChangesAsync();
     }
 }
 
