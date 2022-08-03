@@ -8,6 +8,8 @@ public class ProductsDBContext : DbContext, IUnitOfWork
     {
     }
 
+    public DbSet<Product> Products { get; set; }
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.ApplyConfiguration(new ProductConfig());
