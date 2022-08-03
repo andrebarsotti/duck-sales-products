@@ -43,7 +43,7 @@ public class ProductChangesSimulationServiceTests : BaseTest
     }
 
     private Task ExecuteService()
-        => AutoMoqer.CreateInstance<ProductChangesSimulationService>().Execute();
+        => AutoMoqer.CreateInstance<ProductChangesSimulationService>().Execute(CancellationToken.None);
 
     [Fact]
     public async Task Execute_OnlyUpdateProductWhenTheMaximumNumberOfProductIsReach_Ok()

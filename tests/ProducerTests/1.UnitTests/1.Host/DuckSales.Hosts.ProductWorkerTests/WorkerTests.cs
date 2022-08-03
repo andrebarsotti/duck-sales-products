@@ -4,15 +4,13 @@ namespace DuckSales.Hosts.ProductWorkerTests;
 
 public class WorkerTests : BaseTest
 {
-    public WorkerTests() : base() { }
-
     [Fact]
     public async Task ExecuteAsync_ExucuteScopedProductSevice_Ok()
     {
         // Setup
         Mock<IProductChangesSimulationService> mockProductsService = AutoMoqer
                                                                         .GetMock<IProductChangesSimulationService>();
-        mockProductsService.Setup(service => service.Execute())
+        mockProductsService.Setup(service => service.Execute(It.IsAny<CancellationToken>()))
             .Returns(async Task () => await Task.Delay(100))
             .Verifiable();
 

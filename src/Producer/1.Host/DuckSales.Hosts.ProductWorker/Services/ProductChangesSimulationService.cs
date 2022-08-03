@@ -8,11 +8,12 @@ namespace DuckSales.Hosts.ProductWorker.Services;
 
 public interface IProductChangesSimulationService
 {
-    Task Execute();
+    Task Execute(CancellationToken cancellationToken);
 }
 
 public sealed class ProductChangesSimulationService : IProductChangesSimulationService
 {
+    private const int DefaultWait = 1000;
     private readonly IMediator _mediator;
     private readonly Faker _faker;
     private readonly ProductWorkerSettings _settings;
@@ -21,7 +22,7 @@ public sealed class ProductChangesSimulationService : IProductChangesSimulationS
         IOptions<ProductWorkerSettings> options)
         => (_mediator, _faker, _settings) = (mediator, new Faker(), options.Value);
 
-    public async Task Execute()
+    public async Task Execute(CancellationToken cancellationToken)
     {
         if (ShouldUpdateAProduct(await GetTotalAmountOfProdcuntFromCatalog()))
         {
@@ -31,6 +32,8 @@ public sealed class ProductChangesSimulationService : IProductChangesSimulationS
         {
             await CreateNewProduct();
         }
+
+        await Task.Delay(_settings.WaitingTimeBeferoNextCall ?? DefaultWait, cancellationToken);
     }
 
     private async Task CreateNewProduct() =>

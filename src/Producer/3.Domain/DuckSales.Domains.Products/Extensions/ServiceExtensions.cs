@@ -1,10 +1,10 @@
+using DuckSales.Domains.Products.Services;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace DuckSales.Application.QueryHandlers.Extensions;
+namespace DuckSales.Domains.Products.Extensions;
 
 public static class ServiceExtensions
 {
-    public static void AddQueries(this IServiceCollection service)
-        => service.AddMediatR(typeof(ServiceExtensions).Assembly);
-
+    public static void AddDomainServices(this IServiceCollection service)
+        => service.AddScoped<IProductsService, ProductService>();
 }

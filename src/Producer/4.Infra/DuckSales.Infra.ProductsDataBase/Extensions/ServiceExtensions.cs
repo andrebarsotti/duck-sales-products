@@ -1,10 +1,15 @@
-using DuckSales.Domains.Products.Services;
+using DuckSales.Infra.ProductsDataBase.Repositories;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace DuckSales.Domains.Products.Extensions;
+namespace DuckSales.Infra.ProductsDataBase.Extensions;
 
 public static class ServiceExtensions
 {
-    public static void AddDomainServices(this IServiceCollection service)
-        => service.AddScoped<IProductsService, ProductService>();
+    public static void AddRepositories(this IServiceCollection service, IConfiguration configuration)
+    {
+        service.AddDbContext<ProductsDBContext>(options =>
+            options.UseSqlServer(configuration.GetConnectionString("product")));
+        service.AddScoped<IProductRepository, ProductRepository>();
+    }
 }
