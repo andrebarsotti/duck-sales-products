@@ -1,4 +1,4 @@
-namespace DuckSales.Domains.ProductsTests.Entities;
+namespace DuckSales.Domains.ProductsTests.Entities.Fakers;
 
 public sealed class DepartmentFaker : Faker<Departament>
 {

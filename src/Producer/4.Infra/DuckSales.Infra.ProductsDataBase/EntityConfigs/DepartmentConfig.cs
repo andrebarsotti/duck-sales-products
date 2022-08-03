@@ -19,15 +19,5 @@ public class DepartmentConfig : IEntityTypeConfiguration<Departament>
             .HasColumnName("dpt_name")
             .HasMaxLength(Departament.MaxNameSize)
             .IsRequired();
-        builder.Property(ent => ent.CreatedIn)
-            .ValueGeneratedOnAdd()
-            .HasValueGenerator<DateTimeUtcNowValueGenerator>()
-            .HasColumnName("dpt_created_in")
-            .IsRequired();
-        builder.Property(ent => ent.UpdatedIn)
-            .ValueGeneratedOnUpdate()
-            .HasValueGenerator<DateTimeUtcNowValueGenerator>()
-            .HasColumnName("dpt_updated_in")
-            .IsRequired(false);
     }
 }

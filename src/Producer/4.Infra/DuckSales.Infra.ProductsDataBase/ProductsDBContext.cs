@@ -1,6 +1,8 @@
+using DuckSales.Domains.Products.SeedWork;
+
 namespace DuckSales.Infra.ProductsDataBase;
 
-public class ProductsDBContext : DbContext
+public class ProductsDBContext : DbContext, IUnitOfWork
 {
     public ProductsDBContext(DbContextOptions<ProductsDBContext> options) : base(options)
     {

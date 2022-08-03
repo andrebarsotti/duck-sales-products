@@ -36,17 +36,6 @@ public class ProductConfig : IEntityTypeConfiguration<Product>
             .HasPrecision(8, 2)
             .IsRequired();
 
-        builder.Property(ent => ent.CreatedIn)
-            .ValueGeneratedOnAdd()
-            .HasValueGenerator<DateTimeUtcNowValueGenerator>()
-            .HasColumnName("prd_created_in")
-            .IsRequired();
-        builder.Property(ent => ent.UpdatedIn)
-            .ValueGeneratedOnUpdate()
-            .HasValueGenerator<UpdateDateTimeUtcNowValuGenerator>()
-            .HasColumnName("prd_updated_in")
-            .IsRequired(false);
-
         builder.Property<Guid?>("dpt_id").IsRequired(false);
 
         builder.HasOne(ent => ent.Departament)

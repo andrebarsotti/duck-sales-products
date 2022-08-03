@@ -1,5 +1,6 @@
 using DuckSales.Domains.Products.Repositories;
 using DuckSales.Domains.ProductsTests.Entities;
+using DuckSales.Domains.ProductsTests.Entities.Fakers;
 using Moq;
 
 namespace DuckSales.Domains.ProductsTests.Services;
@@ -77,12 +78,7 @@ public class ProductsServiceTests : BaseTest
                                    Faker.Random.Int(min: 0),
                                    Faker.Finance.Amount());
 
-        Product product = new Faker<Product>()
-            .RuleFor(prd => prd.Id, _ => dto.ProductId)
-            .RuleFor(prd => prd.Name, fk => fk.Commerce.ProductName())
-            .RuleFor(prd => prd.Departament, _ => new DepartmentFaker())
-            .RuleFor(prd => prd.QuantityAvaiableInStock, fk => fk.Random.Int(min: 0))
-            .RuleFor(prd => prd.UnitPrice, fk => fk.Finance.Amount());
+        Product product = ProductFaker.Generate();
 
         Mock<IProductRepository> mockRepository = AutoMoqer.GetMock<IProductRepository>();
         mockRepository.Setup(repo => repo.GetById(It.IsAny<Guid>()))

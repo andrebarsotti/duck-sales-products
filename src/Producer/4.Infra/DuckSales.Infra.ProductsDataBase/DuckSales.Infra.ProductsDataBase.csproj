@@ -21,7 +21,15 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Repositories" />
+    <Compile Remove="SeedWork\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Remove="SeedWork\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="SeedWork\**" />
   </ItemGroup>
 
 </Project>

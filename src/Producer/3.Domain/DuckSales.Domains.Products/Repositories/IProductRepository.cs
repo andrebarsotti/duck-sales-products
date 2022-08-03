@@ -1,12 +1,12 @@
 namespace DuckSales.Domains.Products.Repositories;
 
-public interface IProductRepository
+public interface IProductRepository : IRepository
 {
     Task Add(Product product);
 
     Task<Departament?> GetDepartmentByName(string departmentName);
 
-    Task Update(Product isAny);
+    Task Update(Product product);
 
     Task<Product?> GetById(Guid productId);
 }

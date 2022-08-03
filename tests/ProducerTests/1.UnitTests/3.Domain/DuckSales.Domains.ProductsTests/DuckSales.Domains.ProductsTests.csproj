@@ -26,4 +26,16 @@
     <ProjectReference Include="..\..\..\0.SeedWork\DuckSales.Tests.SeedWork\DuckSales.Tests.SeedWork.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Compile Remove="Entities\Fakers\ProductFaker\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Remove="Entities\Fakers\ProductFaker\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="Entities\Fakers\ProductFaker\**" />
+  </ItemGroup>
+
 </Project>

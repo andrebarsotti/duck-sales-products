@@ -1,3 +1,5 @@
+using DuckSales.Domains.ProductsTests.Entities.Fakers;
+
 namespace DuckSales.Domains.ProductsTests.Entities;
 
 public class ProductTests : BaseTest
