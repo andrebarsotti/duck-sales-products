@@ -1,80 +1,70 @@
-using DuckSales.Application.CommandHandlers.Extensions;
-using DuckSales.Application.QueryHandlers.Extensions;
-using DuckSales.Domains.Products.Extensions;
-using DuckSales.Hosts.ProductWorker;
-using DuckSales.Hosts.ProductWorker.Behaviors;
-using DuckSales.Hosts.ProductWorker.Services;
 using DuckSales.Infra.ProductsDataBase;
-using DuckSales.Infra.ProductsDataBase.Extensions;
-using MediatR;
 using Serilog;
 
-Log.Logger = new LoggerConfiguration()
-    .ReadFrom
-    .Configuration(GetAppConfiguration(args))
-    .CreateLogger();
+namespace DuckSales.Hosts.ProductWorker;
 
-try
+public static class Program
 {
-    Log.Information("Starting host...");
-    IHost host = Host.CreateDefaultBuilder(args)
-        .ConfigureAppConfiguration((context, config) =>
+    public static async Task Main(string[] args)
+    {
+        Log.Logger = new LoggerConfiguration()
+            .ReadFrom
+            .Configuration(GetAppConfiguration(args))
+            .CreateLogger();
+
+        try
         {
-            config.Sources.Clear();
-            PreparerConfigBuilder(config, context.HostingEnvironment.EnvironmentName, args);
-        })
-        .ConfigureServices((host, services) =>
+            Log.Information("Starting host...");
+            IHost host = Host.CreateDefaultBuilder(args)
+                .ConfigureAppConfiguration((context, config) =>
+                {
+                    // Clear configs to work properly in linux enviroments.
+                    config.Sources.Clear();
+                    PreparerConfigBuilder(config, context.HostingEnvironment.EnvironmentName, args);
+                })
+                .ConfigureWebHostDefaults(builder => builder.UseStartup<Startup>())
+                .UseSerilog((context, loggerConfig) => loggerConfig.ReadFrom.Configuration(context.Configuration))
+                .Build();
+
+            host.Services
+                .CreateScope()
+                .ServiceProvider
+                .GetService<ProductsDBContext>()?.Database?.EnsureCreated();
+            Log.Information("Database is created");
+
+            await host.RunAsync();
+        }
+        catch (Exception ex)
         {
-            services.AddHostedService<Worker>();
-            services.AddScoped<IProductChangesSimulationService, ProductChangesSimulationService>();
-            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(LoggingBehavior<,>));
-            services.Configure<ProductWorkerSettings>(host.Configuration.GetSection(nameof(ProductWorkerSettings)));
+            Log.Fatal(ex, "Host terminated unexpectedly");
+        }
+        finally
+        {
+            Log.CloseAndFlush();
+        }
+    }
 
-            services.Configure<ProductWorkerSettings>(host.Configuration);
+    private static IConfiguration GetAppConfiguration(string[] args)
+    {
+        string enviroment = Environment.GetEnvironmentVariable("DOTNET_ENVIRONMENT") ?? "Production";
+        IConfigurationBuilder configurationBuilder = new ConfigurationBuilder();
 
-            services.AddCommannds();
-            services.AddQueries();
-            services.AddDomainServices();
-            services.AddRepositories(host.Configuration);
-        })
-        .UseSerilog((context, loggerConfig) => loggerConfig.ReadFrom.Configuration(context.Configuration))
-        .Build();
+        PreparerConfigBuilder(configurationBuilder, enviroment, args);
 
-    host.Services
-        .CreateScope()
-        .ServiceProvider
-        .GetService<ProductsDBContext>()?.Database?.EnsureCreated();
+        return configurationBuilder.Build();
+    }
 
-    await host.RunAsync();
-}
-catch (Exception ex)
-{
-    Log.Fatal(ex, "Host terminated unexpectedly");
-}
-finally
-{
-    Log.CloseAndFlush();
-}
+    private static void PreparerConfigBuilder(IConfigurationBuilder configurationBuilder, string enviroment, string[] args)
+    {
+        configurationBuilder.SetBasePath(Directory.GetCurrentDirectory())
+            .AddJsonFile("appsettings.json", optional: false, reloadOnChange: false)
+            .AddJsonFile($"appsettings.{enviroment}.json", optional: true, reloadOnChange: false);
 
-static IConfiguration GetAppConfiguration(string[] args)
-{
-    string enviroment = Environment.GetEnvironmentVariable("DOTNET_ENVIRONMENT") ?? "Production";
-    IConfigurationBuilder configurationBuilder = new ConfigurationBuilder();
+        if (enviroment == "Development")
+            configurationBuilder.AddUserSecrets<Startup>(optional: true);
 
-    PreparerConfigBuilder(configurationBuilder, enviroment, args);
-
-    return configurationBuilder.Build();
+        configurationBuilder.AddEnvironmentVariables()
+            .AddCommandLine(args);
+    }
 }
 
-static void PreparerConfigBuilder(IConfigurationBuilder configurationBuilder, string enviroment, string[] args)
-{
-    configurationBuilder.SetBasePath(Directory.GetCurrentDirectory())
-        .AddJsonFile("appsettings.json", optional: false, reloadOnChange: false)
-        .AddJsonFile($"appsettings.{enviroment}.json", optional: true, reloadOnChange: false);
-
-    if (enviroment == "Development")
-        configurationBuilder.AddUserSecrets<Program>(optional: true);
-
-    configurationBuilder.AddEnvironmentVariables()
-        .AddCommandLine(args);
-}

@@ -5,6 +5,6 @@ namespace DuckSales.Domains.Products.Extensions;
 
 public static class ServiceExtensions
 {
-    public static void AddDomainServices(this IServiceCollection service)
+    public static IServiceCollection AddDomainServices(this IServiceCollection service)
         => service.AddScoped<IProductsService, ProductService>();
 }

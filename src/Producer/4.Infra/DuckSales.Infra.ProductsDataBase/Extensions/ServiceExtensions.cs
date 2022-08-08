@@ -6,10 +6,11 @@ namespace DuckSales.Infra.ProductsDataBase.Extensions;
 
 public static class ServiceExtensions
 {
-    public static void AddRepositories(this IServiceCollection service, IConfiguration configuration)
+    public static IServiceCollection AddRepositories(this IServiceCollection service, IConfiguration configuration)
     {
         service.AddDbContext<ProductsDBContext>(options =>
-            options.UseSqlServer(configuration.GetConnectionString("product")));
+            options.UseSqlServer(configuration.GetConnectionString(DatabaseConstants.DataBaseConnection)));
         service.AddScoped<IProductRepository, ProductRepository>();
+        return service;
     }
 }

@@ -4,7 +4,7 @@ namespace DuckSales.Application.CommandHandlers.Extensions;
 
 public static class ServiceExtensions
 {
-    public static void AddCommannds(this IServiceCollection service)
+    public static IServiceCollection AddCommannds(this IServiceCollection service)
         => service.AddMediatR(typeof(ServiceExtensions).Assembly);
 
 }
