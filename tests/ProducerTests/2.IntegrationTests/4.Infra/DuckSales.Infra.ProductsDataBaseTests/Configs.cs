@@ -4,7 +4,7 @@ namespace DuckSales.Infra.ProductsDataBaseTests;
 
 public static class Configs
 {
-    private static IConfiguration _config;
+    private static IConfiguration? _config;
 
     public static IConfiguration Configuration
     {
@@ -13,7 +13,7 @@ public static class Configs
             if (_config is null)
                 SetConfig();
 
-            return _config;
+            return _config!;
         }
     }
 
