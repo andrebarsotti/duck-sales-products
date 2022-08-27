@@ -22,8 +22,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\..\src\Producer\3.Domain\DuckSales.Domains.Products\DuckSales.Domains.Products.csproj" />
     <ProjectReference Include="..\..\..\0.SeedWork\DuckSales.Tests.SeedWork\DuckSales.Tests.SeedWork.csproj" />
+    <ProjectReference Include="..\..\..\..\..\src\ProductServices\3.Domain\DuckSales.Domains.Products\DuckSales.Domains.Products.csproj" />
   </ItemGroup>
 
   <ItemGroup>

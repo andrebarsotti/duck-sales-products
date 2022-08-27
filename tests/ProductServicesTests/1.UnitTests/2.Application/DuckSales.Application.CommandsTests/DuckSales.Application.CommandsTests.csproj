@@ -24,8 +24,8 @@
 
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\..\src\Producer\2.Application\DuckSales.Application.CommandHandlers\DuckSales.Application.CommandHandlers.csproj" />
     <ProjectReference Include="..\..\..\0.SeedWork\DuckSales.Tests.SeedWork\DuckSales.Tests.SeedWork.csproj" />
+    <ProjectReference Include="..\..\..\..\..\src\ProductServices\2.Application\DuckSales.Application.CommandHandlers\DuckSales.Application.CommandHandlers.csproj" />
   </ItemGroup>
 
 </Project>
